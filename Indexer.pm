@@ -22,6 +22,12 @@ use Text::DoubleMetaphone qw( double_metaphone );
 Readonly my $END   => 'end';
 Readonly my $START => 'start';
 
+=head1 Indexer
+
+KinoSearch indexer implementation.
+
+=cut
+
 =head2 new
 
 PUBLIC METHOD.
@@ -46,7 +52,7 @@ sub new {
 
 PUBLIC METHOD.
 
-Build the index given that the circulation data xml file location has been passed
+Build the index given that the data file location has been passed
 into the constructor of the package.
 
 =cut
@@ -58,7 +64,7 @@ sub build_from_file {
     die "Source file does not exist!\n" unless -f $self->{_source};
 
     # Start makeshift crazyfoo parser!
-    # For those wondering why this is not recomended, please use XML::Parser :)
+    # For those wondering why this is not recommended, please use XML::Parser :)
     my $xml = q{};
     my $marker = $END;
 
@@ -96,7 +102,7 @@ sub _index_doc {
     my ($self, $docref) = @_;
 
     # The parsing above isn't great so some items come in the form of arrays
-    # of hashes. Others arrive as singular hashes.
+    # of hashes. Others arrive as singular hashes. Nice!
     my $items = ref($docref->{item}) eq 'ARRAY' ? $docref->{item}
         : [ $docref->{item} ];
 
@@ -122,10 +128,10 @@ sub _index_doc {
 sub _add_to_index {
     my ($self, $doc) = @_;
 
-    # When indexing text do so in such a way so that searches on the index
+    # When indexing text, do so in such a way so that searches on the index
     # are effectively case insensitive, exclusive of stopwords and inclusive
     # of word-stem searches.
-    # These is achieved by defining a PolyAnalyzer with these characteristics
+    # These is achieved by defining a PolyAnalyzer with the stated characteristics
     # and passing it during FieldType instantiation.
 
     $self->{_tokenizer}    ||= KinoSearch::Analysis::Tokenizer->new;
@@ -138,7 +144,7 @@ sub _add_to_index {
         ],
     );
 
-    # This type indicate that content of this type should not be indexed.
+    # This indicates that content of this type should not be indexed.
     $self->{_type_no_idx}   ||= KinoSearch::FieldType::StringType->new(
         indexed => 0
     );
@@ -184,7 +190,7 @@ sub _add_to_index {
     # Get a list of stopwords.
     $self->{_stopwords} ||= Lingua::StopWords::getStopWords('en');
 
-    # Build metaphone phonetic codes from full terms & word-stems; excluding stopwords:
+    # Build phonetic codes from full terms & word-stems; excluding stopwords:
     my @words = grep {
         !$self->{_stopwords}->{$_}
     } split /\s+/, $doc->{title};
