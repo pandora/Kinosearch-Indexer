@@ -102,7 +102,7 @@ sub _index_doc {
     my ($self, $docref) = @_;
 
     # The parsing above isn't great so some items come in the form of arrays
-    # of hashes. Others arrive as singular hashes. Nice!
+    # of hashes. Others arrive as singular hashes.
     my $items = ref($docref->{item}) eq 'ARRAY' ? $docref->{item}
         : [ $docref->{item} ];
 
@@ -131,8 +131,8 @@ sub _add_to_index {
     # When indexing text, do so in such a way so that searches on the index
     # are effectively case insensitive, exclusive of stopwords and inclusive
     # of word-stem searches.
-    # These is achieved by defining a PolyAnalyzer with the stated characteristics
-    # and passing it during FieldType instantiation.
+    # This is achieved by defining a PolyAnalyzer with the above-stated
+    # characteristics and passing it to FieldType instantiation.
 
     $self->{_tokenizer}    ||= KinoSearch::Analysis::Tokenizer->new;
     $self->{_polyanalyzer} ||= KinoSearch::Analysis::PolyAnalyzer->new(
@@ -153,8 +153,7 @@ sub _add_to_index {
         analyzer => $self->{_tokenizer},
     );
 
-    # Full text searches should be case insensitive, exclusive of stopwords and inclusive
-    # of word-stem searches.
+    # Fulltext search type.
     # Matched terms should also be highlighted enabling contextual searches:
     $self->{_type_fulltext} ||= KinoSearch::FieldType::FullTextType->new(
         analyzer => $self->{_polyanalyzer},
@@ -181,7 +180,7 @@ sub _add_to_index {
         truncate => 1,
     );
 
-    # Build an object to help us determine words stems of any given word.
+    # Build an object to help determine words stems of any given word.
     $self->{_stemmerObj} ||= Lingua::Stem::Snowball->new(
         lang     => 'en',
     );
