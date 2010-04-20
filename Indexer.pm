@@ -132,7 +132,7 @@ sub _add_to_index {
     # are effectively case insensitive, exclusive of stopwords and inclusive
     # of word-stem searches.
     # This is achieved by defining a PolyAnalyzer with the above-stated
-    # characteristics and passing it to FieldType instantiation.
+    # characteristics and passing it through to FieldType instantiation.
 
     $self->{_tokenizer}    ||= KinoSearch::Analysis::Tokenizer->new;
     $self->{_polyanalyzer} ||= KinoSearch::Analysis::PolyAnalyzer->new(
