@@ -1,0 +1,19 @@
+NAME
+    eg_kinosearch - Simple Kinosearch indexer. 
+
+SYNOPSIS
+    use Indexer;
+
+    my $indexer = Indexer->new(
+        source  => $CIRCULATION_DATA,
+        idx_loc => $INDEX_LOCATION,
+        verbose => 1,
+    );
+    $indexer->build_from_file;
+
+DESCRIPTION
+    Build an inverted index using Kinosearch: 
+    http://search.cpan.org/~creamyg/KinoSearch-0.315/
+    
+    In addition to input data (minus stopwords), word-stems 
+    and phonetic codes of input data are also indexed.

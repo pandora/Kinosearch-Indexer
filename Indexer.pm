@@ -8,7 +8,7 @@ use warnings;
 use Readonly;
 use XML::Bare;
 
-use KinoSearch;
+use KinoSearch 0.313;
 use KinoSearch::Schema;
 use KinoSearch::Index::Indexer;
 use KinoSearch::Analysis::PolyAnalyzer;
@@ -63,8 +63,7 @@ sub build_from_file {
     # Does file exist?
     die "Source file does not exist!\n" unless -f $self->{_source};
 
-    # Start makeshift crazyfoo parser!
-    # For those wondering why this is not recommended, please use XML::Parser :)
+    # Handle XML by hand.
     my $xml = q{};
     my $marker = $END;
 
@@ -89,7 +88,6 @@ sub build_from_file {
             $xml .= $_;
         }
     }
-    # End makeshift crazyfoo !
 
     # Close filehandle & commit inserts into the inverted index.
     close $fh;
