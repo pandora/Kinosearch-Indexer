@@ -63,7 +63,7 @@ sub build_from_file {
     # Does file exist?
     die "Source file does not exist!\n" unless -f $self->{_source};
 
-    # Handle XML by hand.
+    # Handle XML by hand. Preferable to use an XML library in production.
     my $xml = q{};
     my $marker = $END;
 
